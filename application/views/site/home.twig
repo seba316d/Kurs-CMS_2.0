@@ -1,0 +1,18 @@
+{% extends 'site/include/header.twig' %}
+
+{% block logout %}
+    {% if session == 1 %}
+        <li><a href="{{ base_url() }}account/logout">Wyloguj</a></li>
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    {% autoescape %}
+        {{ validation|raw }}
+    {% endautoescape %}
+
+<h1>Strona główna</h1>
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'admin/include/header.twig' %}
+
+{% block body %}
+
+    <h1>Lista użytkownikow</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Login</th>
+        <th>Adres e-mail</th>
+        <th>Data utworzenia</th>
+        <th>Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.create_date }}</td>
+            <td>
+                <a href="{{ base_url() }}admin/users/edit/{{ user.id }}"> <button type="button" class="btn btn-info">Edytuj</button></a>
+                <a href="{{ base_url() }}admin/users/delete/{{ user.id }}" onclick="return confirm('Czy na pewno chcesz usunąć uzytkownika?')"><button type="button" class="btn btn-danger" id="delete_user">Usuń</button></a>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+
+   <a href="{{ base_url() }}admin/users/create_user"> <button type="button" class="btn btn-primary">Dodaj użytkownika</button> </a>
+
+{% endblock %}

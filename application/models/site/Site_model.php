@@ -3,10 +3,11 @@
 /**
  * Created by PhpStorm.
  * User: s.manczak
- * Date: 14.09.2017
- * Time: 13:21
+ * Date: 18.09.2017
+ * Time: 09:39
  */
-class Admin_model extends CI_Model {
+
+class Site_model extends CI_Model {
 
     public function __construct()
     {
@@ -39,9 +40,9 @@ class Admin_model extends CI_Model {
 
     public function get_single($table,$where)
     {
-         $query = $this->db->get_where($table,$where);
-         $this->db->get($table);
-         return $query->row();
+        $query = $this->db->get_where($table,$where);
+        $this->db->get($table);
+        return $query->row();
     }
 
 }

@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Test extends CI_Controller {
+class Home extends My_Controller {
 
     /**
      * Index Page for this controller.
@@ -19,15 +19,28 @@ class Test extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('session');
+        $this->load->model('site/Site_model');
+    }
+
     public function index()
     {
-        $data = [
-            'powitanie'=>
-                ['title'=>'Witamy na stronie', 'message' => "Wiadomość powitalna"]
-        ];
 
-        $output = $this->twig->render('welcome',$data);
-        echo $output;
 
+        if(!isset($_SESSION['logged_in']))
+        {
+            redirect('account/login');
+            $data['session'] = 0;
+        }
+        else
+        {
+            $data['session'] = 1;
+        }
+
+        $this->twig->display('site/home',$data);
     }
 }
