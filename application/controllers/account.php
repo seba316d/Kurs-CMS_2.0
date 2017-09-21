@@ -9,7 +9,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Account extends My_Controller
+class Account extends Site_Controller
 {
     public function __construct()
     {
@@ -17,6 +17,12 @@ class Account extends My_Controller
         $this->load->library('session');
         $this->load->library('twig');
         $this->load->model('site/Site_model');
+    }
+
+    public function index()
+    {
+        $data['validation']= $this->session->flashdata('alert');
+        $this->twig->display('site/login',$data);
     }
 
     public function registration()
@@ -168,7 +174,6 @@ class Account extends My_Controller
         $this->twig->display('site/login',$data);
     }
 
-
     public function activation($code){
 
         $where = array("activation_code" =>$code);
@@ -264,6 +269,7 @@ class Account extends My_Controller
 
     public function reset_password($reset_password_code)
     {
+        $this->session->set_flashdata('alert',"");
         $where = array('reset_password_code'=>$reset_password_code);
         $user = $this->Site_model->get_single('users',$where);
 
@@ -284,6 +290,7 @@ class Account extends My_Controller
                     $where = array('id'=>$user->id);
                     $this->Site_model->m_update("users",$data,$where); //model od update użytkownika`
                     $this->session->set_flashdata('alert','Hasło zostało zmienione poprawnie :)');
+                    redirect('/');
                 }
                 else
                 {
@@ -291,10 +298,14 @@ class Account extends My_Controller
                 }
 
             }
-            $data_code['validation'] = '';
             $data_code['code'] = $reset_password_code;
             $data_code['validation']= $this->session->flashdata('alert');
             $this->twig->display('site/reset_password',$data_code);
+        }
+        else
+        {
+            $this->session->set_flashdata('alert',"Podany kod nie istnieje !");
+             redirect('/');
         }
     }
 

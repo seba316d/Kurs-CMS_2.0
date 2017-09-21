@@ -10,7 +10,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Users extends CI_Controller {
+class Users extends Admin_Controller {
 
 
     public function __construct()
@@ -23,15 +23,26 @@ class Users extends CI_Controller {
 
     public function index()
     {
-        $data['users'] = $this->Admin_model->get('users');
+        $data['users'] = $this->Admin_model->get('users'); // Pobieranie uzytkownikow
+        $groups = $this->Admin_model->get('groups'); // Pobieranie grup
+
+        foreach ($groups as $group)
+        {
+            $groups_id_name_arr[$group->id] = $group->name;
+        }
+        $data['groups_id_name_arr'] = $groups_id_name_arr;
+        $data['user_groups'] = $this->Admin_model->get('user_groups');
+
+        $data['group'] = chceck_group(array('admin')); // jaka grupa może wykonywać jakąś akcję ;)
+
         $this->twig->display('admin/users/index',$data);
     }
 
-
     public function create_user()
     {
-        $data['base_url'] =  base_url('');
 
+        $data['group'] = $this->Admin_model->get('groups');
+       // var_dump($data['group']);
 
         if(!empty($_POST)){
 
@@ -46,8 +57,16 @@ class Users extends CI_Controller {
                     'email'=> $this->input->post("email",true),
                 );
 
-
                 $this->Admin_model->m_create("users",$data);
+
+                $where = array('email'=>$this->input->post("email",true));
+                $user = $this->Admin_model->get_single('users',$where);
+
+                $data_group['user_id'] = $user->id;
+                $data_group['group_id'] = $data['group'];
+
+
+                $this->Admin_model->m_create("user_groups",$data_group);
                 $this->session->set_flashdata('alert',"Użytkownik został dodany !");
             }
             else
@@ -64,11 +83,12 @@ class Users extends CI_Controller {
 
     public function edit($id)
     {
+
         $where = array('id'=>$id);
+        $data['edit_user'] = $this->Admin_model->get_single('users',$where); //Pobieranie info o użytkowniku o danym ID
 
-        $data['edit_user'] = $this->Admin_model->get_single('users',$where);
-
-        if(!empty($_POST)){
+        if(!empty($_POST))
+        {
 
             $old_password = $data['edit_user']->password;
 
@@ -88,6 +108,38 @@ class Users extends CI_Controller {
 
                 $where = array('id'=>$id);
                 $this->Admin_model->m_update("users",$data,$where); //model od update użytkownika
+
+                $data_group = array(
+                    'user_id'=> $id,
+                    'group_id'=>$this->input->post("group",true),
+                );
+
+                $data['group'] = $this->Admin_model->get('groups'); // Pobieranie wszystkich grup
+
+                $where = array('user_id'=>$id);
+                $data['user_group'] = $this->Admin_model->get_single('user_groups',$where); // Pobieranie pojedynczego wpisu w user_groups po user_id
+
+                foreach ( $data['group'] as $group)
+                {
+                    if($group->id == $data['user_group']->group_id)
+                    {
+                        $data['group_id'] = $data['user_group']->group_id;
+                    }
+                    elseif ($data['user_group']->group_id === 0)
+                    {
+                        $data['group_id'] = "a";
+                    }
+                }
+
+                if (!isset( $data['group_id']))
+                {
+                    $this->Admin_model->m_create("user_groups",$data_group);
+                }
+                else
+                {
+                    $where = array('user_id' => $id);
+                    $this->Admin_model->m_update("user_groups", $data_group, $where); //model od update grupy
+                }
                 $this->session->set_flashdata('alert',"Użytkownik został edytowany !");
                redirect('admin/users');
             }
@@ -97,6 +149,25 @@ class Users extends CI_Controller {
             }
 
         }
+
+        $data['group'] = $this->Admin_model->get('groups'); // Pobieranie wszystkich grup
+
+        $where = array('user_id'=>$id);
+        $data['user_group'] = $this->Admin_model->get_single('user_groups',$where); // Pobieranie pojedynczego wpisu w user_groups po user_id
+
+        foreach ( $data['group'] as $group)
+        {
+            if(!empty($data['user_group'])) {
+                if ($group->id == $data['user_group']->group_id) {
+                    $data['group_id'] = $data['user_group']->group_id;
+                }
+                elseif ($data['user_group']->group_id == 0)
+                {
+                    $data['group_id'] = 0;
+                }
+            }
+        }
+
 
         $data['validation']= $this->session->flashdata('alert');
         $this->twig->display('admin/users/edit',$data);
@@ -108,7 +179,7 @@ class Users extends CI_Controller {
     {
         $where = array('id'=>$id);
         $this->Admin_model->m_delete("users",$where); //model od usuwania użytkownika
-        redirect('/users',200);
+        redirect('admin/users',200);
     }
 
     public function email_edit($email)

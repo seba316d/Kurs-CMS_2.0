@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Home extends My_Controller {
+class Home extends Site_Controller {
 
     /**
      * Index Page for this controller.
@@ -30,6 +30,10 @@ class Home extends My_Controller {
     public function index()
     {
 
+        if (isset($_SESSION['alert']))
+        {
+            $data['validation'] = $_SESSION['alert'];
+        }
 
         if(!isset($_SESSION['logged_in']))
         {
