@@ -92,3 +92,41 @@ class My_Controller extends CI_Controller
 
 
 }
+
+
+class Site_Controller extends My_Controller
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('session');
+        $this->load->model('site/Site_model');
+
+    }
+
+
+}
+
+class Admin_Controller extends My_Controller
+{
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('session');
+        $this->load->model('admin/Admin_model');
+
+
+        if(chceck_group(array('admin','janusz')) == true)
+        {
+            $this->session->set_flashdata('alert',"Nie masz dostępu do tej części serwisu!");
+            redirect('/');
+        }
+
+
+    }
+
+
+}

@@ -53,6 +53,33 @@ $config = array(
         ),
     ),
 
+    'admin_groups_create'=> array(
+        array(
+            'field'=>'name',
+            'label' => 'Nazwa grupy',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'alias',
+            'label' => 'alias',
+            'rules' => 'trim|is_unique[groups.alias]'
+        ),
+
+    ),
+
+    'admin_groups_edit'=> array(
+        array(
+            'field'=>'name',
+            'label' => 'Nazwa grupy',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'alias',
+            'label' => 'Alias',
+            'rules' => 'trim|callback_alias_edit'
+        ),
+    ),
+
     'site_user_create'=> array(
         array(
             'field'=>'username',
