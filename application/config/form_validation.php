@@ -103,6 +103,44 @@ $config = array(
         ),
     ),
 
+    'site_user_edit'=> array(
+        array(
+            'field'=>'username',
+            'label' => 'Login',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'password',
+            'label' => 'Hasło',
+            'rules' => 'trim|min_length[5]'
+        ),
+        array(
+            'field'=>'password_retry',
+            'label' => 'Powtórz hasło',
+            'rules' => 'trim|matches[password]'
+        ),
+        array(
+            'field'=>'phone',
+            'label' => 'Telefon',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'zip_code',
+            'label' => 'Kod pocztowy',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'street',
+            'label' => 'Ulica i numer domu',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field'=>'city',
+            'label' => 'city',
+            'rules' => 'trim|required'
+        ),
+    ),
+
     'site_user_login'=> array(
 
         array(
@@ -116,6 +154,8 @@ $config = array(
             'rules' => 'trim|required'
         ),
     ),
+
+
 
     'site_user_forgot'=> array(
 

@@ -21,7 +21,7 @@
             <th scope="row">{{ loop.index }}</th>
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.create_date }}</td>
+            <td>{{ user.create_date|date('d.m.Y H:i:s') }}</td>
             {% for user_group in user_groups %}
 
                 {% if user.id == user_group.user_id %}

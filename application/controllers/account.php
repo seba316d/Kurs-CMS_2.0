@@ -21,8 +21,49 @@ class Account extends Site_Controller
 
     public function index()
     {
+
+        $id = $this->session->userdata('id');
+        $where = array('id'=>$id);
+        $data['edit_user'] = $this->Site_model->get_single('users',$where); //Pobieranie info o użytkowniku o danym ID
+
+        if(!empty($_POST))
+        {
+
+            $old_password = $data['edit_user']->password;
+
+
+            if($this->form_validation->run('site_user_edit')==TRUE)
+            {
+                $data = array(
+                    'username'=> $this->input->post("username",true),
+                    'password' => password_hash($this->input->post("password",true),PASSWORD_DEFAULT),
+                    'modify_date' => time(),
+                    'phone' => number_format($this->input->post("phone",true),'0','','-'),
+                    'zip_code' => $this->input->post("zip_code",true),
+                    'street' => $this->input->post("street",true),
+                    'city' => $this->input->post("city",true),
+                );
+
+                if($_POST['password']== ""){
+                    $data['password']=$old_password;
+                }
+
+                $where = array('id'=>$id);
+                $this->Site_model->m_update("users",$data,$where); //model od update użytkownika
+
+                $this->session->set_flashdata('alert',"Użytkownik został edytowany !");
+                redirect('/account');
+            }
+            else
+            {
+                $this->session->set_flashdata('alert',validation_errors());
+            }
+
+        }
+
+
         $data['validation']= $this->session->flashdata('alert');
-        $this->twig->display('site/login',$data);
+        $this->twig->display('site/account/index',$data);
     }
 
     public function registration()
