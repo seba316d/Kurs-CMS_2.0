@@ -7,19 +7,40 @@
     {% autoescape %}
         {{ validation|raw }}
     {% endautoescape %}
-    <form class="add_user" action="{{ base_url() }}admin/users/edit/{{ edit_user.id }}" method="POST" id="add_user">
+    <form class="add_user" action="{{ base_url() }}account" method="POST" id="add_user">
 
         <div class="form-group">
-            <label for="Login">Login</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Podaj Login...." value="{{ edit_user.username }}">
+            <label for="Login">Twoja nazwa użytkownika</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Podaj nowy login...." value="{{ edit_user.username }}">
         </div>
         <div class="form-group">
             <label for="Password">Hasło</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Podaj hasło...">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Podaj nowe hasło...">
         </div>
         <div class="form-group">
             <label for="retry_password">Powtórz hasło</label>
-            <input type="password" class="form-control" id="password_retry" name="password_retry" placeholder="Powtórz hasło..." >
+            <input type="password" class="form-control" id="password_retry" name="password_retry" placeholder="Powtórz nowe hasło..." >
+        </div>
+        <div class="form-group">
+            <label for="emial">Adres e-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Podaj email..." value="{{ edit_user.email }}" disabled >
+        </div>
+
+        <div class="form-group">
+            <label for="Login">Numer telefonu</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Podaj numer telefonu" value="{{ edit_user.phone }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Kod pocztowy</label>
+            <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="Podaj kod pocztowy." value="{{ edit_user.zip_code }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Ulica i numer domu</label>
+            <input type="text" class="form-control" id="street" name="street" placeholder="Podaj ulice..." value="{{ edit_user.street }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Miasto</label>
+            <input type="text" class="form-control" id="city" name="city" placeholder="Podaj miejsowosc...." value="{{ edit_user.city }}">
         </div>
         <button type="submit" class="btn btn-default" id="add_user_button">Edytuj użytkownika</button>
 

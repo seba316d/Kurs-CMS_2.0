@@ -53,7 +53,7 @@ class Users extends Admin_Controller {
                     'username'=> $this->input->post("username",true),
                     'password' => password_hash($this->input->post("password",true),PASSWORD_DEFAULT),
                     'group' => $this->input->post("group",true),
-                    'create_date' => date("Y/m/d H:i:s"),
+                    'create_date' => time(),
                     'email'=> $this->input->post("email",true),
                 );
 
