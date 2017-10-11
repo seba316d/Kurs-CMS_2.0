@@ -1,0 +1,16 @@
+{% extends 'site/include/header.twig' %}
+
+{% block body %}
+
+    {% if author == true %}
+        <a href="{{ base_url('add/add/') }}edit/{{ ad.id }}">Edytuj ogłoszenie</a>
+    {% endif %}
+    {% if author == true %}
+        <a href="{{ base_url('add/add/delete/') }}{{ ad.id }}" onclick="return confirm('Czy na pewno chcesz usunąć ogłoszenie ?')">Usuń ogłoszenie</a>
+    {% endif %}
+
+    <h1>{{ ad.title }}</h1>
+    <p>{{ ad.description }}</p>
+
+
+{% endblock %}

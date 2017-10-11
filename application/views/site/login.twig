@@ -1,0 +1,32 @@
+{% extends 'site/include/header.twig' %}
+
+{% block body %}
+
+    <h1>Logowanie</h1>
+    {% autoescape %}
+        {{ validation|raw }}
+    {% endautoescape %}
+    <form class="login_user" action="{{ base_url() }}account/login" method="POST" id="add_user">
+        <div class="form-group">
+            <label for="email">Adres e-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="password">Hasło</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Hasło">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="1" name="remember_me"> Zapamiętaj mnie
+            </label>
+            <div class="form-group">
+                <a href="{{ base_url() }}account/forgot-password">Zapomniałem hasła</a>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Wyślij</button>
+    </form>
+
+
+
+
+{% endblock %}

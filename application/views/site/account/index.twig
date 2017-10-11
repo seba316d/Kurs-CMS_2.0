@@ -1,0 +1,86 @@
+{% extends 'site/include/header.twig' %}
+
+{% block body %}
+
+    <h1>Edycja użytkownika</h1>
+
+    {% autoescape %}
+        {{ validation|raw }}
+    {% endautoescape %}
+    <form class="add_user" action="{{ base_url() }}account" method="POST" id="add_user">
+
+        <div class="form-group">
+            <label for="Login">Twoja nazwa użytkownika</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Podaj nowy login...." value="{{ edit_user.username }}">
+        </div>
+        <div class="form-group">
+            <label for="Password">Hasło</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Podaj nowe hasło...">
+        </div>
+        <div class="form-group">
+            <label for="retry_password">Powtórz hasło</label>
+            <input type="password" class="form-control" id="password_retry" name="password_retry" placeholder="Powtórz nowe hasło..." >
+        </div>
+        <div class="form-group">
+            <label for="emial">Adres e-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Podaj email..." value="{{ edit_user.email }}" disabled >
+        </div>
+
+        <div class="form-group">
+            <label for="Login">Numer telefonu</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Podaj numer telefonu" value="{{ edit_user.phone }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Kod pocztowy</label>
+            <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="Podaj kod pocztowy." value="{{ edit_user.zip_code }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Ulica i numer domu</label>
+            <input type="text" class="form-control" id="street" name="street" placeholder="Podaj ulice..." value="{{ edit_user.street }}">
+        </div>
+        <div class="form-group">
+            <label for="Login">Miasto</label>
+            <input type="text" class="form-control" id="city" name="city" placeholder="Podaj miejsowosc...." value="{{ edit_user.city }}">
+        </div>
+        <button type="submit" class="btn btn-default" id="add_user_button">Edytuj użytkownika</button>
+
+    </form>
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $("input").on("blur",function () {
+            if($('#'+this.id).val()==""){
+                console.log("wartosc jest pusta "+ this.id);
+                $('#'+this.id+'_alert').remove();
+                $('#'+this.id).after('<div id="'+this.id+'_alert" class="alert alert-warning">Musisz uzupełnić te pole</div>');
+                $('button').attr("disabled", true);
+            }else{
+                $('#'+this.id+'_alert').remove();
+                $('button').attr("disabled", false);
+                console.log("OK");
+            }
+        })
+
+        $("form").submit(function () {
+            if($('#username').val()=="" )
+            {
+                $('#add_user_button_alert').remove();
+                $('#add_user_button').after('<div id="add_user_button_alert" class="alert alert-danger">Musisz uzupełnić wymagane pola</div>');
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+
+    </script>
+
+{% endblock %}

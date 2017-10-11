@@ -1,0 +1,89 @@
+{% extends 'admin/include/header.twig' %}
+
+{% block body %}
+
+    <h1> Nowa kategoria</h1>
+    {% autoescape %}
+        {{ validation|raw }}
+    {% endautoescape %}
+    <form class="add_user" action="{{ base_url() }}admin/category/create_ads_cats" method="POST" id="add_user">
+
+        <div class="form-group">
+            <label for="name">Nazwa kategorii</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Podaj nazwe kategori....">
+        </div>
+        <div class="form-group">
+            <label for="alias">Alias</label>
+            <input type="text" class="form-control" id="alias" name="alias" placeholder="Podaj alias...">
+        </div>
+        <div class="form-group">
+            <label for="alias">Podkategoria</label>
+            <select name="parent_id">
+                <option>-</option>
+                {% for first_cat in first_category %}
+
+                        <option value="{{ first_cat.id }}">{{ first_cat.name }}</option>
+
+                    {% for second_cat in second_category %}
+
+                        {% if second_cat.parent_id == first_cat.id %}
+                            <option value="{{ second_cat.id }}">&nbsp;&rarr;{{ second_cat.name }}</option>
+
+                            {% for third_cat in third_category %}
+
+                                {% if third_cat.parent_id == second_cat.id %}
+                                    <option value="{{ third_cat.id }}">&nbsp;&nbsp;&nbsp;&nbsp;&rarr;{{ third_cat.name }}</option>
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-default" id="add_user_button">Dodaj grupe</button>
+
+    </form>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $("input").on("blur",function () {
+            if($('#'+this.id).val()==""){
+                console.log("wartosc jest pusta "+ this.id);
+                $('#'+this.id+'_alert').remove();
+                $('#'+this.id).after('<div id="'+this.id+'_alert" class="alert alert-warning">Musisz uzupełnić te pole</div>');
+                $('button').attr("disabled", true);
+            }else{
+                $('#'+this.id+'_alert').remove();
+                $('button').attr("disabled", false);
+                console.log("OK");
+            }
+        })
+
+        $("form").submit(function () {
+            if($('#username').val()=="" || $('#password').val()=="" || $('#password_retry').val()=="")
+            {
+                $('#add_user_button_alert').remove();
+                $('#add_user_button').after('<div id="add_user_button_alert" class="alert alert-danger">Musisz uzupełnić wymagane pola</div>');
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+
+    </script>
+
+{% endblock %}

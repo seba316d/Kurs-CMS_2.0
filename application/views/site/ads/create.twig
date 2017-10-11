@@ -1,0 +1,40 @@
+{% extends 'site/include/header.twig' %}
+
+{% block body %}
+
+<h1>Dodaj nowe ogłoszenie</h1>
+{% autoescape %}
+    {{ validation|raw }}
+{% endautoescape %}
+<form class="add_user" action="{{ base_url() }}add/add/create_ads" method="POST" id="add_user">
+
+    <div class="form-group">
+        <label for="Tytuł">Tytul </label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Tytuł ogłoszenia....">
+    </div>
+    <div class="form-group">
+        <label for="category">category_id</label>
+        <input type="text" class="form-control" id="category_id" name="category_id" placeholder="ID kategori....">
+    </div>
+    <div class="form-group">
+        <label for="description">Opis</label>
+        <textarea type="text" class="form-control" id="description" name="description" placeholder="Podaj Opis...."></textarea>
+    </div>
+    <div class="form-group">
+        <label for="thumb">Miniaturka</label>
+        <input type="text" class="form-control" id="thumb" name="thumb" placeholder="Link do minatury....">
+    </div>
+
+    <div class="form-group">
+      {#  <label for="user_group">Grupa użytkownika</label>
+        <select class="form-control" name="group">
+            {% for groups in group %}
+                <option value="{{ groups.id }}">{{ groups.name }}</option>
+            {% endfor %}
+        </select>#}
+    </div>
+    <button type="submit" class="btn btn-default" id="add_user_button">Dodaj ogłoszenie</button>
+
+</form>
+
+{% endblock %}

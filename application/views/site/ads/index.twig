@@ -1,0 +1,28 @@
+{% extends 'site/include/header.twig' %}
+
+{% block body %}
+
+    <h1>Lista Ogłoszeń</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Tytul</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for adss in ads %}
+
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td><a href="{{ base_url() }}add/add/show/{{ adss.id }}/{{ alias( adss.title ) }} ">{{ adss.title }}</a> </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ base_url() }}add/add/create_ads"> <button type="button" class="btn btn-primary">Dodaj ogłoszenie</button> </a>
+
+
+{% endblock %}

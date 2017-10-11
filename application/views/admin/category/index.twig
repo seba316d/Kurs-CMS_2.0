@@ -1,0 +1,37 @@
+{% extends 'admin/include/header.twig' %}
+
+{% block body %}
+
+    <h1>Lista kategori</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Grupa</th>
+            <th>Alias</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cat in ads_category %}
+
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.alias }}</td>
+                <td>
+                    {% if cat.alias != admin %}
+                        <a href="{{ base_url() }}admin/category/edit/{{ cat.id }}"> <button type="button" class="btn btn-info">Edytuj</button></a>
+                        <a href="{{ base_url() }}admin/category/delete/{{ cat.id }}" onclick="return confirm('Czy na pewno chcesz usunąć uzytkownika?')"><button type="button" class="btn btn-danger" id="delete_cat">Usuń</button></a>
+                    {% endif %}
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ base_url() }}admin/category/create_ads_cats"> <button type="button" class="btn btn-primary">Dodaj grupe</button> </a>
+
+{% endblock %}
